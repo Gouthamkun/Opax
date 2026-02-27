@@ -9,3 +9,10 @@ python-multipart
 python-dotenv
 sqlalchemy
 requests
+google-generativeai
+fpdf
+axios
+framer-motion
+lucide-react
+chart.js
+react-chartjs-2

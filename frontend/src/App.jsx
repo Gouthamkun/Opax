@@ -53,6 +53,13 @@ ChartJS.register(
     Filler
 );
 
+const iconMap = {
+    TrendingUp: TrendingUp,
+    ShieldCheck: ShieldCheck,
+    Zap: Zap,
+    BrainCircuit: BrainCircuit
+};
+
 // --- Components ---
 
 const SidebarItem = ({ icon: Icon, label, active = false, onClick }) => (
@@ -131,6 +138,28 @@ function App() {
     const [sim80D, setSim80D] = useState(15000);
     const [simNPS, setSimNPS] = useState(25000);
     const [simGrowth, setSimGrowth] = useState(8);
+    const [simResult, setSimResult] = useState(null);
+
+    useEffect(() => {
+        const triggerSim = async () => {
+            try {
+                const res = await axios.post("http://127.0.0.1:8000/api/v1/simulate", {
+                    salary: profile.salary,
+                    age: profile.age,
+                    investments_80c: sim80C,
+                    investments_80d: sim80D,
+                    investments_nps: simNPS,
+                    expected_growth: simGrowth
+                });
+                setSimResult(res.data.simulation);
+            } catch (err) {
+                console.error("Simulation failed:", err);
+            }
+        };
+
+        const timeoutId = setTimeout(triggerSim, 300);
+        return () => clearTimeout(timeoutId);
+    }, [sim80C, sim80D, simNPS, simGrowth, profile.salary, profile.age]);
 
     const handleUpload = async (e) => {
         e.preventDefault();
@@ -283,16 +312,56 @@ function App() {
         </div>
     );
 
+    const renderFinancialHealth = () => (
+        <div className="space-y-8 animate-in fade-in duration-500">
+            <div>
+                <h1 className="text-2xl font-bold mb-1 tracking-tight text-white">Financial Health Dashboard</h1>
+                <p className="text-slate-500 text-[13px]">A deep dive into your financial stability and tax efficiency</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-3xl shadow-sm">
+                    <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Savings Efficiency</h4>
+                    <div className="text-4xl font-black text-brandBlue mb-2">{results?.tax_analysis?.health_metrics?.score ?? "62"}%</div>
+                    <p className="text-xs text-slate-500">How much of your potential savings you actually captured.</p>
+                </div>
+                <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-3xl shadow-sm">
+                    <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Tax Leakage</h4>
+                    <div className="text-4xl font-black text-red-500 mb-2">₹{(results?.tax_analysis?.savings_opportunity || 84500).toLocaleString()}</div>
+                    <p className="text-xs text-slate-500">Potential annual savings currently left on the table.</p>
+                </div>
+                <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-3xl shadow-sm">
+                    <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">80C Readiness</h4>
+                    <div className="text-4xl font-black text-accentCyan mb-2">{results?.tax_analysis?.health_metrics?.utilization_80c?.toFixed(0) ?? "0"}%</div>
+                    <p className="text-xs text-slate-500">Your current progress towards the ₹1.5L limit.</p>
+                </div>
+            </div>
+
+            <div className="bg-[#151B28] border border-slate-800/40 p-10 rounded-[40px] shadow-sm">
+                <h3 className="text-lg font-bold mb-8">Asset Allocation Suggestion</h3>
+                <div className="h-64">
+                    <Doughnut data={{
+                        labels: ['Equity (ELSS)', 'Debt (PPF)', 'Insurance (80D)', 'Safety (FD)'],
+                        datasets: [{
+                            data: [40, 30, 20, 10],
+                            backgroundColor: ['#3B82F6', '#06B6D4', '#10B981', '#1E293B'],
+                            borderWidth: 0
+                        }]
+                    }} options={{ maintainAspectRatio: false }} />
+                </div>
+            </div>
+        </div>
+    );
+
     const renderTaxOptimizer = () => (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-[40px] shadow-sm">
                 <h3 className="text-lg font-bold mb-8">Monthly Income vs Expenses</h3>
                 <div className="h-80">
                     <Line data={{
-                        labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+                        labels: results?.chart_data?.months ?? ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
                         datasets: [
                             { label: 'Income', data: [95, 95, 98, 105, 105, 108, 105, 108, 112, 112, 112, 115], borderColor: '#3B82F6', tension: 0.4, fill: true, backgroundColor: 'rgba(59,130,246,0.1)', pointRadius: 0 },
-                            { label: 'Expenses', data: [65, 62, 70, 68, 62, 72, 65, 75, 72, 70, 72, 75], borderColor: '#06B6D4', tension: 0.4, fill: true, backgroundColor: 'rgba(6,182,212,0.1)', pointRadius: 0 }
+                            { label: 'Expenses', data: results?.chart_data?.expenses ?? [65, 62, 70, 68, 62, 72, 65, 75, 72, 70, 72, 75], borderColor: '#06B6D4', tension: 0.4, fill: true, backgroundColor: 'rgba(6,182,212,0.1)', pointRadius: 0 }
                         ]
                     }} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: '#1E293B' }, ticks: { color: '#666', callback: v => `${v}K` } }, x: { grid: { display: false }, ticks: { color: '#666' } } }, plugins: { legend: { display: false } } }} />
                 </div>
@@ -345,20 +414,20 @@ function App() {
                 <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-[#151B28] border border-slate-800/40 p-6 rounded-2xl flex flex-col justify-between">
-                            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">TAX SAVED (OLD)</div>
-                            <div className="text-3xl font-bold text-brandGreen">₹39,000</div>
+                            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">TAX PAYABLE (OLD)</div>
+                            <div className="text-3xl font-bold text-brandGreen">₹{simResult?.old_tax?.toLocaleString() ?? "39,000"}</div>
                         </div>
                         <div className="bg-[#151B28] border border-slate-800/40 p-6 rounded-2xl flex flex-col justify-between">
-                            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">TAX SAVED (NEW)</div>
-                            <div className="text-3xl font-bold text-accentCyan">₹6,500</div>
+                            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">TAX PAYABLE (NEW)</div>
+                            <div className="text-3xl font-bold text-accentCyan">₹{simResult?.new_tax?.toLocaleString() ?? "6,500"}</div>
                         </div>
                     </div>
 
                     <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-[32px] space-y-6 shadow-sm">
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">SAVINGS GAP REMAINING</div>
-                        <div className="text-4xl font-black text-yellow-500">₹1,20,000</div>
-                        <div className="h-2 bg-slate-900 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-brandBlue to-accentCyan" style={{ width: '60%' }}></div></div>
-                        <div className="flex justify-between text-[10px] text-slate-600 font-bold uppercase"><span>Invested</span><span>₹2,50,000 limit</span></div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">ESTIMATED TAX SAVED</div>
+                        <div className="text-4xl font-black text-brandBlue">₹{simResult?.tax_saved?.toLocaleString() ?? "0"}</div>
+                        <div className="h-2 bg-slate-900 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-brandBlue to-accentCyan" style={{ width: `${simResult?.health_score ?? 0}%` }}></div></div>
+                        <div className="flex justify-between text-[10px] text-slate-600 font-bold uppercase"><span>Simulation Health</span><span>{simResult?.health_score ?? 0}% Score</span></div>
                     </div>
 
                     <div className="bg-[#151B28] border border-slate-800/40 p-8 rounded-[32px] space-y-8 shadow-sm">
@@ -383,12 +452,30 @@ function App() {
             </div>
             <div className="max-w-4xl space-y-4">
                 <div className="flex justify-between items-center mb-10">
-                    <h3 className="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em]">6-Month Optimization Timeline</h3>
-                    <button className="flex items-center gap-2 text-[10px] font-black text-brandBlue uppercase tracking-widest"><Zap size={14} /> Regenerate Strategy</button>
+                    <h3 className="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em]">Live Optimization Timeline</h3>
+                    <button className="flex items-center gap-2 text-[10px] font-black text-brandBlue uppercase tracking-widest"><Zap size={14} /> Update Logic</button>
                 </div>
-                <TimelineStep month="MONTH 1-2" title="Start SIP in ELSS" description="Begin a monthly SIP of ₹5,000 in a tax-saving ELSS fund for Section 80C benefits." amount="5,000/month" icon={TrendingUp} color="bg-brandBlue" />
-                <TimelineStep month="MONTH 3" title="Buy Health Insurance" description="Secure comprehensive health coverage of ₹20,000 for Section 80D." amount="20,000" icon={ShieldCheck} color="bg-brandGreen" />
-                <TimelineStep month="MONTH 4-6" title="Invest in PPF" description="Allocate ₹10,000 monthly to Public Provident Fund for safe returns." amount="10,000/month" icon={Zap} color="bg-accentCyan" />
+
+                {(results?.tax_analysis?.recommendations?.length > 0 || simResult?.recommendations?.length > 0) ? (
+                    (results?.tax_analysis?.recommendations || simResult?.recommendations).map((rec, i) => (
+                        <div key={i} className="relative">
+                            {!results && <div className="absolute -left-2 -top-2 bg-brandBlue text-[8px] font-black text-white px-2 py-1 rounded-full z-10 shadow-lg uppercase tracking-tighter">Draft Strategy</div>}
+                            <TimelineStep
+                                month={rec.month}
+                                title={rec.title}
+                                description={rec.description}
+                                amount={rec.amount}
+                                icon={iconMap[rec.icon] || Zap}
+                                color={rec.color}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <div className="bg-[#151B28] border border-slate-800/40 p-10 rounded-2xl text-center">
+                        <div className="text-brandGreen font-bold mb-2">Maximum Efficiency Achieved!</div>
+                        <p className="text-xs text-slate-500">You are already optimized for tax savings. Keep following your current plan.</p>
+                    </div>
+                )}
 
                 <div className="mt-20 pt-10 border-t border-slate-800/30">
                     <h3 className="text-lg font-bold mb-2 text-white">Future Tax Projection</h3>
@@ -429,8 +516,8 @@ function App() {
                             </div>
                         )}
                         <div className={`p-4 rounded-2xl max-w-[85%] text-[13px] leading-relaxed ${msg.role === 'user'
-                                ? 'bg-brandBlue text-white rounded-tr-sm'
-                                : 'bg-[#151B28] text-slate-300 border border-slate-800/50 rounded-tl-sm'
+                            ? 'bg-brandBlue text-white rounded-tr-sm'
+                            : 'bg-[#151B28] text-slate-300 border border-slate-800/50 rounded-tl-sm'
                             }`}>
                             {msg.content}
                         </div>
@@ -479,6 +566,7 @@ function App() {
         switch (activeTab) {
             case 'Dashboard': return renderDashboard();
             case 'Tax Optimizer': return renderTaxOptimizer();
+            case 'Financial Health': return renderFinancialHealth();
             case 'What-If Simulator': return renderWhatIf();
             case 'AI Strategy Plan': return renderAIStrategy();
             default: return renderDashboard();

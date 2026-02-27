@@ -1,0 +1,27 @@
+Date,Description,Amount,Type
+2025-04-01,Salary Credit - ABC Pvt Ltd,100000,CREDIT
+2025-04-03,LIC Premium Payment,-15000,DEBIT
+2025-04-05,PPF Contribution,-20000,DEBIT
+2025-04-08,Amazon Purchase,-3500,DEBIT
+2025-04-10,Health Insurance - Star Health,-18000,DEBIT
+2025-04-12,Electricity Bill Payment,-2500,DEBIT
+2025-04-15,ELSS SIP - Axis Mutual Fund,-10000,DEBIT
+2025-04-18,Restaurant Payment,-2200,DEBIT
+2025-04-20,Tuition Fees Payment,-25000,DEBIT
+2025-04-22,Petrol Pump,-3000,DEBIT
+2025-05-01,Salary Credit - ABC Pvt Ltd,100000,CREDIT
+2025-05-04,NPS Contribution,-5000,DEBIT
+2025-05-07,Netflix Subscription,-649,DEBIT
+2025-05-10,Medical Pharmacy,-3200,DEBIT
+2025-05-12,LIC Premium Payment,-15000,DEBIT
+2025-05-15,ELSS SIP - Axis Mutual Fund,-10000,DEBIT
+2025-05-18,Grocery Store,-5400,DEBIT
+2025-05-20,Star Health Insurance Renewal,-7000,DEBIT
+2025-05-22,Swiggy Order,-850,DEBIT
+2025-06-01,Salary Credit - ABC Pvt Ltd,100000,CREDIT
+2025-06-04,PPF Contribution,-20000,DEBIT
+2025-06-06,Movie Tickets,-1200,DEBIT
+2025-06-10,ELSS SIP - Axis Mutual Fund,-10000,DEBIT
+2025-06-15,Tuition Fees Payment,-25000,DEBIT
+2025-06-18,Electricity Bill Payment,-2600,DEBIT
+2025-06-22,Amazon Purchase,-4500,DEBIT

@@ -25,3 +25,19 @@ class TaxResult(BaseModel):
     health_score: int
     utilization_80c: float
     utilization_80d: float
+
+class SimulationRequest(BaseModel):
+    salary: float
+    age: int
+    investments_80c: float
+    investments_80d: float
+    investments_nps: float
+    expected_growth: float = 0.0
+
+class SimulationResponse(BaseModel):
+    old_tax: float
+    new_tax: float
+    tax_saved: float
+    recommended: str
+    savings_gap: float
+    health_score: int

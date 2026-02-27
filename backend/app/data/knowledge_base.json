@@ -1,0 +1,163 @@
+{
+    "tax_slabs": {
+        "new_regime_fy_2024_25": {
+            "standard_deduction": 75000,
+            "slabs": [
+                {
+                    "limit": [
+                        0,
+                        300000
+                    ],
+                    "rate": 0
+                },
+                {
+                    "limit": [
+                        300001,
+                        700000
+                    ],
+                    "rate": 5
+                },
+                {
+                    "limit": [
+                        700001,
+                        1000000
+                    ],
+                    "rate": 10
+                },
+                {
+                    "limit": [
+                        1000001,
+                        1200000
+                    ],
+                    "rate": 15
+                },
+                {
+                    "limit": [
+                        1200001,
+                        1500000
+                    ],
+                    "rate": 20
+                },
+                {
+                    "limit": [
+                        1500001,
+                        null
+                    ],
+                    "rate": 30
+                }
+            ],
+            "rebate_87a_limit": 700000
+        },
+        "old_regime_fy_2024_25": {
+            "standard_deduction": 50000,
+            "slabs": [
+                {
+                    "limit": [
+                        0,
+                        250000
+                    ],
+                    "rate": 0
+                },
+                {
+                    "limit": [
+                        250001,
+                        500000
+                    ],
+                    "rate": 5
+                },
+                {
+                    "limit": [
+                        500001,
+                        1000000
+                    ],
+                    "rate": 20
+                },
+                {
+                    "limit": [
+                        1000001,
+                        null
+                    ],
+                    "rate": 30
+                }
+            ]
+        }
+    },
+    "investment_options": {
+        "80C": [
+            {
+                "name": "Public Provident Fund (PPF)",
+                "interest_rate": "7.1%",
+                "lock_in": "15 years",
+                "risk": "Low",
+                "tax_status": "EEE",
+                "ideal_for": "Long-term safe wealth"
+            },
+            {
+                "name": "Sukanya Samriddhi Yojana (SSY)",
+                "interest_rate": "8.2%",
+                "lock_in": "Until age 21",
+                "risk": "Low",
+                "eligibility": "Girl child < 10yr",
+                "tax_status": "EEE"
+            },
+            {
+                "name": "Equity Linked Savings Scheme (ELSS)",
+                "expected_returns": "12-15%",
+                "lock_in": "3 years",
+                "risk": "Market-linked",
+                "tax_status": "EET (Exempt up to 1.25L LTCG)"
+            },
+            {
+                "name": "National Savings Certificate (NSC)",
+                "interest_rate": "7.7%",
+                "lock_in": "5 years",
+                "risk": "Low",
+                "tax_status": "Interest Taxable"
+            },
+            {
+                "name": "Senior Citizens Savings Scheme (SCSS)",
+                "interest_rate": "8.2%",
+                "lock_in": "5 years",
+                "eligibility": "Age 60+",
+                "tax_status": "Interest Taxable"
+            },
+            {
+                "name": "Life Insurance Premiums",
+                "types": [
+                    "Term",
+                    "ULIP",
+                    "Endowment"
+                ],
+                "deduction": "Full premium",
+                "limit_note": "Premium < 10% of Sum Assured"
+            },
+            {
+                "name": "Children Tuition Fees",
+                "eligibility": "Max 2 children",
+                "deduction": "Full tuition component"
+            }
+        ],
+        "80D": {
+            "self_family": {
+                "base": 25000,
+                "senior_citizen": 50000
+            },
+            "parents": {
+                "base": 25000,
+                "senior_citizen": 50000
+            },
+            "preventive_checkup": 5000
+        },
+        "NPS": {
+            "80CCD_1B": 50000,
+            "80CCD_2": "Employer contribution (10-14% of Basic + DA)",
+            "lock_in": "Until Age 60",
+            "maturity": "60% Lamp-sum (Tax Free), 40% Annuity"
+        }
+    },
+    "financial_health_standards": {
+        "emergency_fund": "6x Monthly Expenses",
+        "savings_rate": "20% Minimum",
+        "insurance_cover": "10-20x Annual Income"
+    }
+}
