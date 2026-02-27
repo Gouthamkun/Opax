@@ -1,0 +1,85 @@
+{
+    "financial_year": "2024-2025",
+    "standard_deduction": {
+        "old_regime": 50000,
+        "new_regime": 75000
+    },
+    "limits": {
+        "80C": 150000,
+        "80D": {
+            "self_family_below_60": 25000,
+            "parents_below_60": 25000,
+            "self_family_above_60": 50000,
+            "parents_above_60": 50000
+        },
+        "80CCD_1B": 50000,
+        "24B_interest_housing": 200000
+    },
+    "slabs": {
+        "old_regime": [
+            {
+                "min": 0,
+                "max": 250000,
+                "rate": 0.0
+            },
+            {
+                "min": 250001,
+                "max": 500000,
+                "rate": 0.05
+            },
+            {
+                "min": 500001,
+                "max": 1000000,
+                "rate": 0.20
+            },
+            {
+                "min": 1000001,
+                "max": null,
+                "rate": 0.30
+            }
+        ],
+        "new_regime": [
+            {
+                "min": 0,
+                "max": 300000,
+                "rate": 0.0
+            },
+            {
+                "min": 300001,
+                "max": 700000,
+                "rate": 0.05
+            },
+            {
+                "min": 700001,
+                "max": 1000000,
+                "rate": 0.10
+            },
+            {
+                "min": 1000001,
+                "max": 1200000,
+                "rate": 0.15
+            },
+            {
+                "min": 1200001,
+                "max": 1500000,
+                "rate": 0.20
+            },
+            {
+                "min": 1500001,
+                "max": null,
+                "rate": 0.30
+            }
+        ]
+    },
+    "rebate_87A": {
+        "old_regime": {
+            "max_income": 500000,
+            "max_rebate": 12500
+        },
+        "new_regime": {
+            "max_income": 700000,
+            "max_rebate": 25000
+        }
+    },
+    "cess_percent": 4.0
+}

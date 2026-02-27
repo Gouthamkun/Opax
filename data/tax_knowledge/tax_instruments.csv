@@ -1,0 +1,119 @@
+instrument_name,section,category,provider,risk_level
+LIC Premium,80C,Insurance,LIC,Low
+HDFC ELSS Tax Saver,80C,Mutual Fund,HDFC,Medium
+SBI Life Term Plan,80C,Insurance,SBI,Low
+Star Health Insurance,80D,Health Insurance,Star,Low
+Niva Bupa Health,80D,Health Insurance,Niva Bupa,Low
+ICICI Prudential Life,80C,Insurance,ICICI,Low
+Axis Long Term Equity,80C,Mutual Fund,Axis,Medium
+Mirae Asset Tax Saver,80C,Mutual Fund,Mirae,Medium
+Public Provident Fund (PPF),80C,Investment,Govt of India,Low
+National Savings Certificate (NSC),80C,Investment,Govt of India,Low
+EPF Contribution,80C,Investment,Govt of India,Low
+NPS Tier 1,80CCD_1B,Pension,PFRDA,Medium
+Tata AIA Life,80C,Insurance,Tata AIA,Low
+Apollo Munich Health,80D,Health Insurance,Apollo,Low
+Max Bupa Health,80D,Health Insurance,Max Bupa,Low
+Care Health Insurance,80D,Health Insurance,Care,Low
+HDFC Ergo Health,80D,Health Insurance,HDFC,Low
+Sukanya Samriddhi Yojana (SSY),80C,Investment,Govt of India,Low
+Tax Saver Fixed Deposit,80C,Investment,Banks,Low
+HDFC Housing Loan Principal,80C,Housing,HDFC,Low
+SBI Home Loan Principal,80C,Housing,SBI,Low
+Bajaj Allianz Life Insurance,80C,Insurance,Bajaj Allianz,Low
+Nippon India Tax Saver,80C,Mutual Fund,Nippon India,Medium
+Quant Tax Plan,80C,Mutual Fund,Quant,High
+Parag Parikh Tax Saver,80C,Mutual Fund,Parag Parikh,Medium
+Canara Robeco Equity Tax Saver,80C,Mutual Fund,Canara Robeco,Medium
+Aditya Birla Sun Life Tax Relief,80C,Mutual Fund,Aditya Birla,Medium
+DSP Tax Saver Fund,80C,Mutual Fund,DSP,Medium
+Kotak Tax Saver Fund,80C,Mutual Fund,Kotak,Medium
+Reliance Health Insurance,80D,Health Insurance,Reliance,Low
+Religare Health Insurance,80D,Health Insurance,Religare,Low
+Aditya Birla Health Insurance,80D,Health Insurance,Aditya Birla,Low
+SBI General Health Insurance,80D,Health Insurance,SBI,Low
+ICICI Lombard Health,80D,Health Insurance,ICICI Lombard,Low
+Navi Health Insurance,80D,Health Insurance,Navi,Low
+Acko Health Insurance,80D,Health Insurance,Acko,Low
+Post Office Time Deposit (5 yr),80C,Investment,India Post,Low
+Senior Citizen Savings Scheme (SCSS),80C,Investment,Govt of India,Low
+Unit Linked Insurance Plan (ULIP),80C,Insurance,Various,Medium
+HDFC Life Click 2 Protect,80C,Insurance,HDFC,Low
+ICICI Pru iProtect Smart,80C,Insurance,ICICI Pru,Low
+Max Life Smart Term Plan,80C,Insurance,Max Life,Low
+Edelweiss Tokio Life,80C,Insurance,Edelweiss,Low
+PNB MetLife,80C,Insurance,PNB MetLife,Low
+Future Generali Health,80D,Health Insurance,Future Generali,Low
+National Insurance Health,80D,Health Insurance,National Insurance,Low
+New India Assurance Health,80D,Health Insurance,New India,Low
+Oriental Insurance Health,80D,Health Insurance,Oriental,Low
+United India Health,80D,Health Insurance,United India,Low
+Tuition Fees Payment,80C,Education,Various,Low
+Home Loan Principal Repayment,80C,Housing,Various,Low
+Education Loan Interest Payment,80E,Education,Various,Low
+Charitable Donation,80G,Donation,Various,NA
+Medical Treatment for Dependents,80DD,Health,Various,NA
+Medical Treatment for Specific Diseases,80DDB,Health,Various,NA
+Interest Income on Savings Account,80TTA,Income,Various,NA
+Senior Citizen Interest Income,80TTB,Income,Various,NA
+Electric Vehicle Loan Interest,80EEB,Loan,Various,NA
+House Rent Allowance (HRA),10(13A),Allowance,Various,NA
+Leave Travel Allowance (LTA),10(5),Allowance,Various,NA
+Children Education Allowance,10(14),Allowance,Various,NA
+Hostel Expenditure Allowance,10(14),Allowance,Various,NA
+Standard Deduction,16(ia),Deduction,Govt of India,NA
+Professional Tax,16(iii),Tax,State Govt,NA
+Entertainment Allowance,16(ii),Allowance,Govt of India,NA
+Life Insurance Corporation of India (LIC) Premium,80C,Insurance,LIC,Low
+SBI Life - eShield,80C,Insurance,SBI Life,Low
+ICICI Pru Signature,80C,Insurance,ICICI Pru,Low
+HDFC Life Sanchay Plus,80C,Insurance,HDFC Life,Low
+Max Life Online Term Plan,80C,Insurance,Max Life,Low
+Kotak e-Term Plan,80C,Insurance,Kotak Life,Low
+Tata AIA Life Insurance Sampoorna Raksha,80C,Insurance,Tata AIA Life,Low
+Bajaj Allianz iSecure,80C,Insurance,Bajaj Allianz Life,Low
+PNB MetLife Mera Term Plan,80C,Insurance,PNB MetLife,Low
+Aditya Birla Sun Life Protector Plus,80C,Insurance,Aditya Birla Sun Life,Low
+SBI Magnum Taxgain Scheme,80C,Mutual Fund,SBI Mutual Fund,High
+ICICI Prudential Long Term Equity Fund,80C,Mutual Fund,ICICI Prudential Mutual Fund,High
+HDFC TaxSaver,80C,Mutual Fund,HDFC Mutual Fund,High
+Aditya Birla Sun Life Tax Relief '96,80C,Mutual Fund,Aditya Birla Sun Life Mutual Fund,High
+DSP Tax Saver Fund,80C,Mutual Fund,DSP Mutual Fund,High
+Franklin India Taxshield,80C,Mutual Fund,Franklin Templeton Mutual Fund,High
+Kotak Tax Saver Fund,80C,Mutual Fund,Kotak Mahindra Mutual Fund,High
+Tata India Tax Savings Fund,80C,Mutual Fund,Tata Mutual Fund,High
+Nippon India Tax Saver (ELSS) Fund,80C,Mutual Fund,Nippon India Mutual Fund,High
+Axis Long Term Equity Fund,80C,Mutual Fund,Axis Mutual Fund,High
+Star Health Optima Restore,80D,Health Insurance,Star Health,Low
+Niva Bupa ReAssure,80D,Health Insurance,Niva Bupa,Low
+Care Advantage,80D,Health Insurance,Care Health,Low
+HDFC ERGO Optima Secure,80D,Health Insurance,HDFC ERGO,Low
+ICICI Lombard Complete Health Insurance,80D,Health Insurance,ICICI Lombard,Low
+SBI General Arogya Supreme,80D,Health Insurance,SBI General,Low
+Aditya Birla Activ Health Platinum Enhanced,80D,Health Insurance,Aditya Birla,Low
+Bajaj Allianz Health Care Supreme,80D,Health Insurance,Bajaj Allianz,Low
+TATA AIG Medicare,80D,Health Insurance,TATA AIG,Low
+National Insurance Mediclaim,80D,Health Insurance,National Insurance,Low
+New India Assurance Mediclaim,80D,Health Insurance,New India Assurance,Low
+Oriental Insurance Happy Family Floater,80D,Health Insurance,Oriental Insurance,Low
+United India Family Medicare,80D,Health Insurance,United India Insurance,Low
+Religare Care Health Insurance,80D,Health Insurance,Religare,Low
+Apollo Munich Optima Restore,80D,Health Insurance,Apollo Munich,Low
+Max Bupa Health Companion,80D,Health Insurance,Max Bupa,Low
+Cigna TTK ProHealth,80D,Health Insurance,Cigna TTK,Low
+Reliance HealthWise,80D,Health Insurance,Reliance General,Low
+Bharti AXA SmartHealth,80D,Health Insurance,Bharti AXA,Low
+Cholamandalam MS Healthline,80D,Health Insurance,Cholamandalam MS,Low
+Universal Sompo Complete Healthcare,80D,Health Insurance,Universal Sompo,Low
+Future Generali Health Total,80D,Health Insurance,Future Generali,Low
+Liberty Videocon Health Connect,80D,Health Insurance,Liberty Videocon,Low
+Magma HDI OneHealth,80D,Health Insurance,Magma HDI,Low
+Raheja QBE Health QuBE,80D,Health Insurance,Raheja QBE,Low
+SBI Pension Fund,80CCD(1B),Pension,SBI Pension Funds Pvt. Ltd.,Medium
+LIC Pension Fund,80CCD(1B),Pension,LIC Pension Fund Ltd.,Medium
+UTI Retirement Solutions,80CCD(1B),Pension,UTI Retirement Solutions Ltd.,Medium
+HDFC Pension Management,80CCD(1B),Pension,HDFC Pension Management Co. Ltd.,Medium
+ICICI Prudential Pension Funds,80CCD(1B),Pension,ICICI Prudential Pension Funds Management Co. Ltd.,Medium
+Kotak Mahindra Pension Fund,80CCD(1B),Pension,Kotak Mahindra Pension Fund Ltd.,Medium
+Reliance Capital Pension Fund,80CCD(1B),Pension,Reliance Capital Pension Fund Ltd.,Medium
+Aditya Birla Sun Life Pension Management,80CCD(1B),Pension,Aditya Birla Sun Life Pension Management Ltd.,Medium
