@@ -1,0 +1,6 @@
+# OpenTax-AI Requirements
+# Add your dependencies here
+openai
+pandas
+numpy
+flask
