@@ -1,2 +1,1 @@
-# opax
-Project opax repository.
+# OpenTax-AI 
