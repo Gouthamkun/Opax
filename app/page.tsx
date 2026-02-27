@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { MobileSidebar } from "@/components/mobile-sidebar"
 import { TopNav } from "@/components/top-nav"
@@ -18,6 +19,26 @@ export default function OpaxDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check authentication and onboarding status continuously 
+    const isAuthenticated = localStorage.getItem("opax_authenticated") === "true"
+    const hasDataUploaded = localStorage.getItem("opax_data_uploaded") === "true"
+
+    if (!isAuthenticated) {
+      router.push("/login")
+    } else if (!hasDataUploaded) {
+      router.push("/onboarding")
+    } else {
+      setIsLoading(false)
+    }
+  }, [router])
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-background flex items-center justify-center">Loading...</div>
+  }
 
   return (
     <div className="flex min-h-screen bg-background">
