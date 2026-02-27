@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import {
     LayoutDashboard,
@@ -108,6 +108,19 @@ function App() {
     const [showReportModal, setShowReportModal] = useState(false);
     const [showChat, setShowChat] = useState(false);
     const [chatInput, setChatInput] = useState("");
+    const [messages, setMessages] = useState([
+        { role: 'assistant', content: 'Hello! I can help you optimize your taxes. Try asking me about Section 80C investments or regime comparison.' }
+    ]);
+    const [isTyping, setIsTyping] = useState(false);
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isTyping, showChat]);
 
     const [profile, setProfile] = useState({
         name: 'Akhil', salary: 1200000, age: 28, risk_appetite: 'moderate', financial_year: '2024-25'
@@ -134,6 +147,34 @@ function App() {
             alert("Analysis failed.");
         } finally {
             setIsAnalyzing(false);
+        }
+    };
+
+    const handleSendMessage = async () => {
+        if (!chatInput.trim()) return;
+
+        const userMsg = chatInput;
+        setChatInput("");
+        setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+        setIsTyping(true);
+
+        try {
+            const res = await axios.post("http://127.0.0.1:8000/api/v1/chat", {
+                message: userMsg,
+                history: messages,
+                user_context: results ? {
+                    salary: profile.salary,
+                    age: profile.age,
+                    tax_analysis: results.tax_analysis
+                } : null
+            });
+
+            setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
+        } catch (err) {
+            console.error(err);
+            setMessages(prev => [...prev, { role: 'assistant', content: "I'm sorry, I couldn't reach the server. Please ensure the backend is running and you have a valid API key." }]);
+        } finally {
+            setIsTyping(false);
         }
     };
 
@@ -365,10 +406,10 @@ function App() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-28 right-10 w-[380px] h-[500px] bg-[#0F141F] border border-slate-800/60 rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden z-[100]"
+            className="fixed bottom-28 right-10 w-[380px] h-[520px] bg-[#0B0F19] border border-slate-800/80 rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden z-[100]"
         >
             {/* Header */}
-            <div className="bg-[#151B28] px-6 py-5 flex items-center justify-between border-b border-slate-800/40">
+            <div className="bg-[#111622] px-6 py-5 flex items-center justify-between border-b border-slate-800/40">
                 <div className="flex items-center gap-3">
                     <Sparkles size={18} className="text-brandBlue" />
                     <span className="font-bold text-slate-100 tracking-tight">OPAX AI Assistant</span>
@@ -379,25 +420,54 @@ function App() {
             </div>
 
             {/* Chat Body */}
-            <div className="flex-1 p-6 overflow-y-auto space-y-4 flex flex-col justify-end pb-4">
-                <div className="bg-[#1A2234] p-5 rounded-2xl rounded-bl-none max-w-[85%] border border-slate-800/30">
-                    <p className="text-[13px] leading-relaxed text-slate-300">
-                        Hello! I can help you optimize your taxes. Try asking me about Section 80C investments or regime comparison.
-                    </p>
-                </div>
+            <div className="flex-1 p-6 overflow-y-auto space-y-6 flex flex-col pt-8 scrollbar-hide">
+                {messages.map((msg, idx) => (
+                    <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        {msg.role === 'assistant' && (
+                            <div className="w-8 h-8 rounded-full bg-brandBlue/10 flex items-center justify-center mr-3 shrink-0 mt-1">
+                                <Sparkles size={14} className="text-brandBlue" />
+                            </div>
+                        )}
+                        <div className={`p-4 rounded-2xl max-w-[85%] text-[13px] leading-relaxed ${msg.role === 'user'
+                                ? 'bg-brandBlue text-white rounded-tr-sm'
+                                : 'bg-[#151B28] text-slate-300 border border-slate-800/50 rounded-tl-sm'
+                            }`}>
+                            {msg.content}
+                        </div>
+                    </div>
+                ))}
+
+                {isTyping && (
+                    <div className="flex justify-start">
+                        <div className="w-8 h-8 rounded-full bg-brandBlue/10 flex items-center justify-center mr-3 shrink-0 mt-1">
+                            <Sparkles size={14} className="text-brandBlue" />
+                        </div>
+                        <div className="bg-[#151B28] border border-slate-800/50 p-4 rounded-2xl rounded-tl-sm flex items-center gap-1.5 h-[52px]">
+                            <motion.div animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} className="w-1.5 h-1.5 bg-slate-500 rounded-full" />
+                            <motion.div animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-1.5 h-1.5 bg-slate-500 rounded-full" />
+                            <motion.div animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }} className="w-1.5 h-1.5 bg-slate-500 rounded-full" />
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
-            <div className="p-6 pt-2">
-                <div className="bg-[#0B0F19] border border-slate-800/60 rounded-2xl p-2 pl-5 flex items-center gap-3 shadow-inner">
+            <div className="p-4 bg-[#111622] border-t border-slate-800/40">
+                <div className="bg-[#0B0F19] border border-slate-800/80 rounded-2xl p-2 pl-5 flex items-center gap-3 shadow-inner">
                     <input
                         type="text"
                         placeholder="Ask about tax optimization..."
                         className="flex-1 bg-transparent border-none outline-none text-[13px] text-slate-200 placeholder:text-slate-600"
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                     />
-                    <div className="w-10 h-10 bg-brandBlue rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-brandBlue/80 transition-all">
+                    <div
+                        onClick={handleSendMessage}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all ${chatInput.trim() ? 'bg-brandBlue cursor-pointer hover:bg-brandBlue/80' : 'bg-slate-800 cursor-not-allowed opacity-50'
+                            }`}
+                    >
                         <Send size={16} />
                     </div>
                 </div>

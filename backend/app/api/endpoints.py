@@ -8,8 +8,11 @@ from app.models.schemas import UserProfile
 from app.services.data_processing import parse_bank_statement
 from app.ml.transaction_classifier import classifier
 from app.services.tax_engine import tax_engine
+from .chat import router as chat_router
 
 router = APIRouter()
+
+router.include_router(chat_router, tags=["chat"])
 
 @router.post("/analyze")
 async def analyze_transactions(
