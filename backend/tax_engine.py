@@ -11,24 +11,41 @@ load_dotenv()
 def analyze_financials(df: pd.DataFrame) -> dict:
     """
     Analyzes transactions to compute total income, expenses, monthly surplus, 
-    and detects insurance/investments.
+    and detects insurance/investments based on description keywords.
     """
-    # Assuming 1 year of data
-    total_income = df['Credit'].sum()
-    total_expenses = df['Debit'].sum()
+    
+    # The new schema: Date, Description, Amount, Type (CREDIT/DEBIT)
+    # Convert amounts to float/abs just in case they are negative as in the sample
+    df['Amount'] = df['Amount'].abs()
+    
+    total_income = df[df['Type'].str.upper() == 'CREDIT']['Amount'].sum()
+    total_expenses = df[df['Type'].str.upper() == 'DEBIT']['Amount'].sum()
     monthly_surplus = (total_income - total_expenses) / 12 if total_income > total_expenses else 0
     
-    # Categorize detected investments by summing debits in respective categories
+    # Categorize detected investments by string matching on Description
+    # Convert descriptions to lowercase for easier matching
+    df['desc_lower'] = df['Description'].str.lower()
+    
+    # Filter only DEBIT transactions for investments
+    debits = df[df['Type'].str.upper() == 'DEBIT']
+    
+    # Check for keywords and cast to float for JSON serialization
+    ppf_sum = float(debits[debits['desc_lower'].str.contains('ppf')]['Amount'].sum())
+    elss_sum = float(debits[debits['desc_lower'].str.contains('elss|mutual fund')]['Amount'].sum())
+    lic_sum = float(debits[debits['desc_lower'].str.contains('lic|life insurance')]['Amount'].sum())
+    health_sum = float(debits[debits['desc_lower'].str.contains('health|mediclaim')]['Amount'].sum())
+    nps_sum = float(debits[debits['desc_lower'].str.contains('nps|national pension')]['Amount'].sum())
+    
     investments = {
-        "80C_eligible": df[df['Category'] == 'PPF']['Debit'].sum() + df[df['Category'] == 'Mutual Fund (ELSS)']['Debit'].sum() + df[df['Category'] == 'Life Insurance']['Debit'].sum(),
-        "80D_eligible": df[df['Category'] == 'Health Insurance']['Debit'].sum(),
-        "80CCD_eligible": df[df['Category'] == 'NPS']['Debit'].sum()
+        "80C_eligible": ppf_sum + elss_sum + lic_sum,
+        "80D_eligible": health_sum,
+        "80CCD_eligible": nps_sum
     }
     
     return {
-        "total_income": round(total_income, 2),
-        "total_expenses": round(total_expenses, 2),
-        "monthly_surplus": round(monthly_surplus, 2),
+        "total_income": float(round(total_income, 2)),
+        "total_expenses": float(round(total_expenses, 2)),
+        "monthly_surplus": float(round(monthly_surplus, 2)),
         "detected_investments": investments
     }
 
@@ -159,11 +176,11 @@ def process_user_data(df: pd.DataFrame, profile: dict) -> str:
         return json.dumps({"error": str(e)})
 
 if __name__ == "__main__":
-    # Test script with the generated data
+    # Test script with the new user_sample CSV
     print("Testing Tax Engine...")
     try:
-        df = pd.read_csv("c:\\Users\\dwara\\Downloads\\b_czZzU9wmRLk-1772190024275\\backend\\transactions.csv")
-        # dummy profile matching generator
+        df = pd.read_csv("c:\\Users\\dwara\\Downloads\\b_czZzU9wmRLk-1772190024275\\backend\\user_sample.csv")
+        # dummy profile
         profile = {'age': 30, 'salary': 1200000, 'marital_status': 'Single', 'dependents': 0, 'risk_level': 'Medium'}
         
         result_json = process_user_data(df, profile)

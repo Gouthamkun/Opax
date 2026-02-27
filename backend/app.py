@@ -33,9 +33,9 @@ if uploaded_file is not None or st.sidebar.button("Use Sample Data"):
             df = pd.read_csv(uploaded_file)
         else:
             try:
-                df = pd.read_csv("c:\\Users\\dwara\\Downloads\\b_czZzU9wmRLk-1772190024275\\backend\\transactions.csv")
+                df = pd.read_csv("c:\\Users\\dwara\\Downloads\\b_czZzU9wmRLk-1772190024275\\backend\\user_sample.csv")
             except FileNotFoundError:
-                st.error("Sample data not found. Please run `python data_generator.py` first.")
+                st.error("Sample data not found. Please provide a user_sample.csv file.")
                 st.stop()
         
         # Call the engine
