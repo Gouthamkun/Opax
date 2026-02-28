@@ -9,7 +9,6 @@ python-multipart
 python-dotenv
 sqlalchemy
 requests
-google-generativeai
 fpdf
 axios
 framer-motion

@@ -22,6 +22,7 @@ import {
     Lock,
     Sparkles,
     Send,
+    LogOut,
     X as CloseIcon
 } from 'lucide-react';
 import {
@@ -177,6 +178,13 @@ function App() {
         } finally {
             setIsAnalyzing(false);
         }
+    };
+
+    const handleLogout = () => {
+        setResults(null);
+        setFile(null);
+        setActiveTab('Dashboard');
+        setSimResult(null);
     };
 
     const handleSendMessage = async () => {
@@ -573,6 +581,107 @@ function App() {
         }
     };
 
+    const renderUploadScreen = () => (
+        <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center p-6 text-white relative overflow-hidden">
+            {/* Background Decorations */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brandBlue/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen opacity-50"></div>
+            <div className="absolute bottom-[-100px] left-[-100px] w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen opacity-50"></div>
+
+            <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10">
+                <div className="space-y-8 pr-10">
+                    <div className="flex items-center gap-3 mb-10">
+                        <div className="w-12 h-12 bg-brandBlue rounded-xl flex items-center justify-center font-black text-white shadow-2xl shadow-brandBlue/30 text-2xl italic">O</div>
+                        <div>
+                            <div className="font-black text-3xl tracking-tighter leading-none uppercase">OPAX</div>
+                            <div className="text-sm text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">OpenTax AI</div>
+                        </div>
+                    </div>
+
+                    <h1 className="text-5xl font-black tracking-tighter leading-[1.1]">
+                        Financial <span className="text-transparent bg-clip-text bg-gradient-to-r from-brandBlue to-cyan-400">Intelligence,</span> <br /> Local & Secure.
+                    </h1>
+                    <p className="text-slate-400 text-lg max-w-md leading-relaxed">
+                        Upload your bank statement and let OPAX analyze your financial health, detect tax gaps, and provide expert, zero-API deterministic strategies.
+                    </p>
+
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-600 uppercase tracking-widest italic bg-slate-800/20 w-max px-4 py-2 rounded-full border border-slate-800/50">
+                        <Lock size={12} className="text-brandBlue" /> 100% processing on localhost
+                    </div>
+                </div>
+
+                <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-700">
+                    <div className="bg-[#151B28]/80 backdrop-blur-xl border border-slate-800/60 p-10 rounded-[40px] shadow-3xl">
+                        <h3 className="text-xl font-bold mb-8 text-white tracking-tight flex items-center gap-3">
+                            <span className="w-8 h-8 rounded-full bg-brandBlue/10 text-brandBlue flex items-center justify-center text-sm font-black border border-brandBlue/20">1</span>
+                            Profile Details
+                        </h3>
+                        <div className="space-y-6">
+                            <div>
+                                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 block">Annual Income</label>
+                                <input type="number" className="w-full bg-[#0B0F19] border border-slate-800/80 rounded-2xl p-5 text-2xl font-black outline-none focus:border-brandBlue transition-all text-white shadow-inner" value={profile.salary} onChange={(e) => setProfile({ ...profile, salary: Number(e.target.value) })} />
+                            </div>
+                            <div>
+                                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 block">Age</label>
+                                <input type="number" className="w-full bg-[#0B0F19] border border-slate-800/80 rounded-2xl p-5 text-2xl font-black outline-none focus:border-brandBlue transition-all text-white shadow-inner" value={profile.age} onChange={(e) => setProfile({ ...profile, age: Number(e.target.value) })} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-[#151B28]/80 backdrop-blur-xl border border-slate-800/60 p-10 rounded-[40px] shadow-3xl text-center group transition-all hover:bg-[#151B28]">
+                        <h3 className="text-xl font-bold mb-8 text-white tracking-tight flex items-center justify-center gap-3">
+                            <span className="w-8 h-8 rounded-full bg-brandBlue/10 text-brandBlue flex items-center justify-center text-sm font-black border border-brandBlue/20">2</span>
+                            Bank Statement
+                        </h3>
+                        <div className="w-20 h-20 bg-brandBlue/5 rounded-[32px] flex items-center justify-center text-brandBlue mb-6 mx-auto shadow-inner border border-brandBlue/10 group-hover:scale-110 group-hover:bg-brandBlue/10 transition-all duration-500">
+                            <Upload size={36} className="group-hover:-translate-y-1 transition-transform" />
+                        </div>
+                        <input type="file" id="fup" className="hidden" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
+                        <label htmlFor="fup" className="cursor-pointer w-full bg-brandBlue/5 border border-dashed border-brandBlue/30 text-brandBlue py-5 rounded-3xl font-black mb-6 px-8 truncate block tracking-widest hover:bg-brandBlue/10 hover:border-brandBlue transition-all">
+                            {file ? file.name : 'CHOOSE CSV FILE'}
+                        </label>
+                        <button
+                            onClick={handleUpload}
+                            disabled={!file || isAnalyzing}
+                            className="w-full bg-brandBlue py-6 rounded-3xl font-black text-white shadow-[0_0_40px_rgba(59,130,246,0.25)] disabled:opacity-30 disabled:hover:scale-100 disabled:shadow-none uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                        >
+                            {isAnalyzing ? (
+                                <>
+                                    <div className="w-5 h-5 border-[3px] border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    Analyzing Data...
+                                </>
+                            ) : (
+                                <>
+                                    Begin Analysis <ArrowRight size={18} />
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    if (!results && !isAnalyzing) {
+        return renderUploadScreen();
+    }
+
+    if (isAnalyzing) {
+        return (
+            <div className="min-h-screen bg-[#0B0F19] flex flex-col items-center justify-center gap-8 text-white">
+                <div className="relative">
+                    <div className="w-24 h-24 border-[8px] border-brandBlue/10 border-t-brandBlue rounded-full animate-spin"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Sparkles className="text-brandBlue animate-pulse" size={32} />
+                    </div>
+                </div>
+                <div className="text-center space-y-2">
+                    <h2 className="text-2xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Processing Document</h2>
+                    <p className="text-slate-500 text-sm font-bold tracking-widest uppercase">Running local analysis engine</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="flex min-h-screen bg-[#0B0F19] text-slate-200 font-sans tracking-tight">
             <div className="w-64 border-r border-slate-800/50 flex flex-col pt-8 shrink-0 z-50 bg-[#0B0F19]">
@@ -610,42 +719,14 @@ function App() {
                         <button onClick={() => setShowReportModal(true)} className="bg-brandBlue text-white py-2.5 px-6 rounded-xl text-[11px] font-black shadow-xl shadow-brandBlue/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
                             <FileText size={14} /> Generate Report
                         </button>
+                        <button onClick={handleLogout} className="bg-slate-800/40 text-slate-400 py-2.5 px-4 rounded-xl text-[11px] font-black shadow-xl hover:text-white hover:bg-slate-800 transition-all flex items-center gap-2" title="Logout / Reset">
+                            <LogOut size={14} />
+                        </button>
                     </div>
                 </header>
 
                 <main className="flex-1 overflow-y-auto p-10 bg-[#0B0F19]">
-                    {!results && activeTab === 'Dashboard' && !isAnalyzing ? (
-                        <div className="max-w-4xl mx-auto mt-10 space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <h1 className="text-4xl font-black text-white tracking-tighter">Good morning, Akhil</h1>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                <div className="bg-[#151B28] border border-slate-800/40 p-10 rounded-[40px] shadow-3xl">
-                                    <h3 className="text-xl font-bold mb-10 text-white italic tracking-tight">1. Profile Details</h3>
-                                    <div className="space-y-8">
-                                        <div>
-                                            <label className="text-[11px] font-black text-slate-600 uppercase tracking-widest mb-3 block">Annual Income</label>
-                                            <input type="number" className="w-full bg-[#0B0F19] border border-slate-800/50 rounded-2xl p-5 text-2xl font-black outline-none focus:border-brandBlue transition-all text-white" value={profile.salary} onChange={(e) => setProfile({ ...profile, salary: Number(e.target.value) })} />
-                                        </div>
-                                        <div>
-                                            <label className="text-[11px] font-black text-slate-600 uppercase tracking-widest mb-3 block">Age</label>
-                                            <input type="number" className="w-full bg-[#0B0F19] border border-slate-800/50 rounded-2xl p-5 text-2xl font-black outline-none focus:border-brandBlue transition-all text-white" value={profile.age} onChange={(e) => setProfile({ ...profile, age: Number(e.target.value) })} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="bg-[#151B28] border border-slate-800/40 p-10 rounded-[40px] shadow-3xl flex flex-col items-center justify-center text-center">
-                                    <div className="w-20 h-20 bg-brandBlue/5 rounded-[32px] flex items-center justify-center text-brandBlue mb-8 shadow-inner border border-brandBlue/10"><Upload size={40} /></div>
-                                    <h3 className="text-xl font-bold mb-3 text-white">Bank Statement</h3>
-                                    <input type="file" id="fup" className="hidden" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
-                                    <label htmlFor="fup" className="cursor-pointer w-full bg-brandBlue/5 border border-dashed border-brandBlue/20 text-brandBlue py-5 rounded-3xl font-black mb-8 px-8 truncate block tracking-widest hover:bg-brandBlue/10 transition-colors">{file ? file.name : 'UPLOAD CSV'}</label>
-                                    <button onClick={handleUpload} disabled={!file} className="w-full bg-brandBlue py-6 rounded-3xl font-black text-white shadow-[0_0_40px_rgba(59,130,246,0.3)] disabled:opacity-30 uppercase tracking-widest hover:scale-[1.01] active:scale-95 transition-all">Process & Analyze</button>
-                                </div>
-                            </div>
-                        </div>
-                    ) : isAnalyzing ? (
-                        <div className="flex flex-col items-center justify-center h-[70vh] gap-6 animate-in fade-in zoom-in-95 duration-500">
-                            <div className="w-16 h-16 border-[6px] border-brandBlue/10 border-t-brandBlue rounded-full animate-spin"></div>
-                            <h2 className="text-xl font-black uppercase tracking-widest text-white animate-pulse">Analyzing Intelligence</h2>
-                        </div>
-                    ) : renderContent()}
+                    {renderContent()}
                 </main>
             </div>
 
